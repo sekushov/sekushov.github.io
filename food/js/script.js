@@ -171,47 +171,47 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
     
-    const getResource = async (url) => {                 // универсальная функция 
-        const res = await fetch(url);
-        if (!res.ok) {                                  // создаем оповещение при ошибке promise
-            throw new Error(`Could not fetch ${url}, status ${res.status}`);
-        }
-        return await res.json();                         // получаем ответ сервера
-    };
-    getResource("http://localhost:3000/menu")
-        .then(data => {                                 // data - то, что вернулось от fetch (res.json)
-            data.forEach(({img, altimg, title, descr, price}) => {      // деструктуризация объекта в БД
-                new menu_item(title, img, altimg, descr, price, ".menu .container").render();
-            });
-        });
+    new menu_item(
+        'Меню "Фитнес"',
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        9,
+        ".menu .container"
+    ).render();
 
+    new menu_item(
+        'Меню "Постное"',
+        "img/tabs/post.jpg",
+        "post",
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        14,
+        ".menu .container"
+    ).render();
 
+    new menu_item(
+        'Меню “Премиум”',
+        "img/tabs/elite.jpg",
+        "elite",
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        21,
+        ".menu .container"
+    ).render();
 
     // Forms
 
     const forms = document.querySelectorAll("form"),
-            message = {
+        message = {
             loading: "img/spinner.svg",
-            success: "Success!",
-            failure: "Something wrong"
-            };
+            success: "Спасибо, скоро мы с вами свяжемся!",
+            failure: "Что-то пошло не так"
+        };
 
     forms.forEach(item => {
-        bindPostData(item);
+        postData(item);
     });
 
-    const postData = async (url, data) => {                 // универсальная функция 
-        const res = await fetch(url, {                        // посылаем запрос на сервер
-            method: "POST",            
-            headers: {                                 
-                "Content-type": "application/json"
-            },
-            body: data
-        });
-        return await res.json();                              // возвращает res, будто мы сразу обращались к fetch
-    };
-
-    function bindPostData(form) {
+    function postData(form) {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
 
@@ -225,18 +225,28 @@ window.addEventListener("DOMContentLoaded", () => {
 
             const formData = new FormData(form);            // собираем все поля формы form в объект formData
 
-            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
 
-            postData("http://localhost:3000/requests", json)
-            .then(data => {                                 // выводим
+            fetch('server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(object)
+            })
+            .then(data => data.text())
+            .then(data => {
                 console.log(data);
                 showThanksModal(message.success);
-                messageStatus.remove();
-            }).catch(() => {                                // в fetch не сработает на этом примере
+            }).catch(() => {
                 showThanksModal(message.failure);
-            }).finally(() => {                              // очищаем форму
+            }).finally(() => {
                 form.reset();
-            })
+                messageStatus.remove();
+            });
         });
     }
 
@@ -260,10 +270,6 @@ window.addEventListener("DOMContentLoaded", () => {
             hideModal();
         }, 4000);
     }
-
-    fetch("http://localhost:3000/menu")
-        .then(data => data.json())      // перевод данных из json в js формат
-        // .then(res => console.log(res)); // вывод результата
 
 
 
