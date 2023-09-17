@@ -213,7 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i=0; i<sliderImages.length; i++) {
             if (sliderImages[i].classList.contains("slider_img_active")) {
                 sliderImages[i].classList.remove("slider_img_active");
-                console.log(i);
                 if (i == sliderImages.length-1) {
                     sliderImages[0].classList.add("slider_img_active");
                     break;
