@@ -831,7 +831,7 @@ footer a {
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
-.modal_form {
+.modal_content {
   width: 400px;
   max-width: 80%;
   background: #fff;
@@ -901,8 +901,8 @@ footer a {
 }
 @media (max-width: 991.9px) {
   #main h1 span {
-    font-size: 30px;
-    line-height: 30px;
+    font-size: 28px;
+    line-height: 28px;
   }
   #main .main_button_btn {
     padding: 14px 20px 0 20px;

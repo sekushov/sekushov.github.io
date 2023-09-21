@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="Image/x-icon" href="favicon.ico" rel="icon">
     <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
     <link rel="stylesheet" href="css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -319,13 +318,15 @@
     </footer>
 
     <div class="modal">
-        <form class="modal_form">
+        <div class="modal_content">
             <div class="modal_close">&times;</div>
             <div class="modal_title">Оставьте заявку, и мы с вами свяжемся</div>
-            <input type="text" class="modal_input" name="name" placeholder="Ваше имя">
-            <input type="phone" class="modal_input" name="phone" placeholder="Номер телефона">
-            <input type="submit" class="modal_btn">
-        </form>
+            <form class="modal_form">
+                <input type="text" class="modal_input" name="name" placeholder="Ваше имя">
+                <input type="phone" class="modal_input" name="phone" placeholder="Номер телефона">
+                <input type="submit" class="modal_btn">
+            </form>
+        </div>
     </div>
 
     <script src="js/script.js"></script>
