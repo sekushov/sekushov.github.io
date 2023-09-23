@@ -13,18 +13,19 @@
     text-align: center;
 }
 .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
     min-height: 50px;
-    margin: 15px auto;
-    padding: 5px 20px;
+    margin: 20px auto;
+    padding: 10px 20px;
     background: linear-gradient(180deg, #dadada 0%, #c4c4c4 100%);
     color: #000;
-    font-size: 18px;
+    font-size: 20px;
     text-decoration: none;
-    /* text-align: center; */
     border-radius: 5px;
+}
+.descr {
+    font-size: 14px;
+    margin-top: 5px;
 }
 .btn:hover {
     background: linear-gradient(180deg, #c9c9c9 0%, #b0b0b0 100%);
