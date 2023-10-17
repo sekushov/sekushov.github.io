@@ -1,2 +1,7 @@
 /food/node_modules
 /rusdrevstroy/node_modules
+
+/employees/node_modules
+/employees/.git
+/employees/.gitignore
+/employees/README.md
