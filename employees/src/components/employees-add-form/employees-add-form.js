@@ -12,9 +12,10 @@ class EmployeesAddForm extends Component {
     }
     onValueChange = (e) => {
         this.setState({
-            [e.target.name]: e.target.value         // в скобках записывают свойства в объект в ES6. e.target.name прописаны в верстке и совпадают с именами в state
+            [e.target.name]: e.target.value       // в скобках записывают свойства в объект в ES6. e.target.name прописаны в верстке и совпадают с именами в state
         })
     }
+
     render() {
         const {onAdd} = this.props,
               {name, salary} = this.state;

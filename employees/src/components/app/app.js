@@ -8,81 +8,47 @@ import EmployeesAddForm from '../employees-add-form/employees-add-form';
 
 import './app.css';
 
-
-
-// class WhoAmI extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             age: 25,
-//             position: ''
-//         };
-//     }
-//     nextAge = (e, color) => {
-//         this.setState(state => ({
-//             age: state.age + 1
-//         }))
-//         console.log(e);
-//         console.log(color);
-//     }
-//     changePosition = (e) => {
-//         this.setState({
-//             position: e.target.value
-//         })
-//     }
-//     render () {
-//         const {name, surname} = this.props,
-//               {age, position} = this.state;
-//         return (
-//             <div>
-//                 <h2>My name is {name}, 
-//                     surname - {surname}, 
-//                     age - {age},
-//                     position - {position}
-//                 </h2>
-//                 <input type="text" onChange={this.changePosition} /> <br/>
-//                 <button onClick={(e) => this.nextAge(e, 'some color')}>Возраст меняй</button>
-//             </div>
-//         )
-//     }
-// }
-// function App() {
-//     return (
-//         <div className="app">
-//             <WhoAmI name="John" surname="Deff" />
-//         </div>
-//     )
-// }
-
-
-
-
-
-
-
-
-
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = localStorage.getItem('data') ? {
+            data: JSON.parse(localStorage.getItem('data')),
+            term: '',
+            filter: 'all'
+        } : {
             data: [
-                {name: 'Tim', salary: 170000, increase: true, rise: false, id: 1},
-                {name: 'Antony', salary: 110000, increase: false, rise: true, id: 2},
-                {name: 'Alyosha', salary: 20000, increase: true, rise: false, id: 3}
+                {name: 'Попов Павел Петрович', salary: 210000, increase: true, rise: false, id: 1},
+                {name: 'Тим', salary: 170000, increase: true, rise: true, id: 2},
+                {name: 'Ксения', salary: 110000, increase: false, rise: true, id: 3},
+                {name: 'Алёша', salary: 20000, increase: false, rise: false, id: 4},
+                {name: 'Бобик', salary: 100, increase: false, rise: false, id: 5}
             ],
             term: '',
             filter: 'all'
         }
     }
-    deleteItem = (id) => {
-        this.setState(({data}) => {
+    deleteItem = async (id) => {
+        await this.setState(({data}) => {
             return {
                 data: data.filter(item => item.id !== id)
             }
-        })
+        });
+        localStorage.setItem("data", JSON.stringify(this.state.data));
     }
-    addItem = (e, name, salary) => {
+    onChangeSalary = async (id, newSalary) => {
+        await this.setState(({data}) => {
+            return {
+                data: data.map(item => {
+                    if (item.id === id && item.salary !== newSalary) {
+                        return {...item, salary: +newSalary}
+                    } 
+                    return item
+                })
+            }
+        });
+        localStorage.setItem("data", JSON.stringify(this.state.data));
+    }
+    addItem = async (e, name, salary) => {
         e.preventDefault();
         let maxId = 0;
         this.state.data.forEach(item => {
@@ -98,22 +64,25 @@ class App extends Component {
                 setTimeout(() => {wrongText.textContent = ''}, 3000);
             }
         } else {
-            this.setState(({data}) => {
+            await this.setState(({data}) => {
                 return {
-                    data: data.concat({name: name, salary: salary, increase: false, rise: false, id: maxId + 1})
+                    data: data.concat({name: name, salary: +salary, increase: false, rise: false, id: maxId + 1})
                 }
-            })
+            });
+            localStorage.setItem("data", JSON.stringify(this.state.data));
+
         }
     }
-    onToggleProp = (id, prop) => {
-        this.setState(({data}) => ({
+    onToggleProp = async (id, prop) => {
+        await this.setState(({data}) => ({
             data: data.map(item => {
                 if (id === item.id) {
                     return {...item, [prop]: !item[prop]}
                 }
                 return item
             })
-        }))
+        }));
+        localStorage.setItem("data", JSON.stringify(this.state.data));
     }
     onChangeSearch = (term) => {
         this.setState({term})
@@ -144,9 +113,49 @@ class App extends Component {
         }
     }
 
+    // areArraysEqual = (ar1, ar2) => {
+    //     let equal = true;
+    //     if (ar1.length === ar2.length) {
+    //         ar1.forEach((item, i) => {
+    //         for (let key in item) {
+    //             if (typeof(item[key]) === "object") {
+    //                 for (let j in item[key]) {
+    //                     if (item[key][j] !== ar2[i][key][j]) {
+    //                         equal = false
+    //                     }
+    //                 }
+    //             } else {
+    //                  if (item[key] !== ar2[i][key]) {
+    //                     equal = false
+    //                 }
+    //             }
+    //         }
+    //     });
+    //     } else {
+    //         equal = false
+    //     }
+    //     return equal
+    // }
+
+
     render() {
+        // let ar1 = [
+        //         {name: "Биба", age: 35},
+        //         {name: "Абоба", age: 20}
+        //     ],
+        //     ar2 = [
+        //         {name: "Биба", age: 35},
+        //         {name: "Абоба", age: 20},
+        //         {name: "А", age: 1}
+        //     ];
+        // console.log(ar1);
+        // console.log(ar2);
+        // console.log("Массивы равны по значению: " + this.areArraysEqual(ar1, ar2));
+        
+
         const {data, term, filter} = this.state;
         const visibleData = this.filterEmployees(this.searchEmployees(data, term), filter);
+
         return (
             <div className="app">
                 <AppInfo 
@@ -164,10 +173,11 @@ class App extends Component {
                 <EmployeesList 
                     data={visibleData} 
                     onDelete={this.deleteItem} 
-                    onToggleProp={this.onToggleProp} />
+                    onToggleProp={this.onToggleProp} 
+                    onChangeSalary= {this.onChangeSalary}/>
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
-        );
+        )
     }
 }
 
