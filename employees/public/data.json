@@ -1,0 +1,39 @@
+{
+    "data": [
+        {
+            "name": "Попов Павел Петрович", 
+            "salary": 210000, 
+            "increase": true, 
+            "rise": false, 
+            "id": 1
+        },
+        {
+            "name": "Тим", 
+            "salary": 170000, 
+            "increase": true, 
+            "rise": true, 
+            "id": 2
+        },
+        {
+            "name": "Ксения", 
+            "salary": 110000, 
+            "increase": false, 
+            "rise": true, 
+            "id": 3
+        },
+        {
+            "name": "Алёша", 
+            "salary": 20000, 
+            "increase": false, 
+            "rise": false, 
+            "id": 4
+        },
+        {
+            "name": "Бобик", 
+            "salary": 100, 
+            "increase": false, 
+            "rise": false, 
+            "id": 5
+        }
+    ]
+}

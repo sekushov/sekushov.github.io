@@ -11,22 +11,25 @@ import './app.css';
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = localStorage.getItem('data') ? {
-            data: JSON.parse(localStorage.getItem('data')),
+        this.state = {
+            data: localStorage.getItem('data') ? JSON.parse(localStorage.getItem('data')) : [],
             term: '',
             filter: 'all'
-        } : {
-            data: [
-                {name: 'Попов Павел Петрович', salary: 210000, increase: true, rise: false, id: 1},
-                {name: 'Тим', salary: 170000, increase: true, rise: true, id: 2},
-                {name: 'Ксения', salary: 110000, increase: false, rise: true, id: 3},
-                {name: 'Алёша', salary: 20000, increase: false, rise: false, id: 4},
-                {name: 'Бобик', salary: 100, increase: false, rise: false, id: 5}
-            ],
-            term: '',
-            filter: 'all'
+        } 
+    }
+   
+    componentDidMount = () => {
+        if (!localStorage.getItem('data')) {
+            fetch("/data.json")
+                .then(response => response.json())
+                .then(json => {
+                    this.setState({
+                        data: json.data
+                    });
+                }).catch(() => console.log('Что-то пошло не так'));
         }
     }
+
     deleteItem = async (id) => {
         await this.setState(({data}) => {
             return {
@@ -35,6 +38,7 @@ class App extends Component {
         });
         localStorage.setItem("data", JSON.stringify(this.state.data));
     }
+
     onChangeSalary = async (id, newSalary) => {
         await this.setState(({data}) => {
             return {
@@ -48,6 +52,7 @@ class App extends Component {
         });
         localStorage.setItem("data", JSON.stringify(this.state.data));
     }
+
     addItem = async (e, name, salary) => {
         e.preventDefault();
         let maxId = 0;
@@ -56,7 +61,6 @@ class App extends Component {
                 maxId = item.id
             }
         });
-
         const wrongText = document.querySelector('.formWrongText');
         if (name.length < 3 || salary < 100 || name.match(/\d/g)) {
             if (wrongText.textContent === '') {
@@ -73,6 +77,7 @@ class App extends Component {
 
         }
     }
+
     onToggleProp = async (id, prop) => {
         await this.setState(({data}) => ({
             data: data.map(item => {
@@ -84,6 +89,7 @@ class App extends Component {
         }));
         localStorage.setItem("data", JSON.stringify(this.state.data));
     }
+
     onChangeSearch = (term) => {
         this.setState({term})
     }
@@ -95,6 +101,7 @@ class App extends Component {
             return item.name.indexOf(term) > -1
         });
     }
+
     onSelectFilter = (filter) => {
         this.setState({filter})
     }
@@ -113,46 +120,8 @@ class App extends Component {
         }
     }
 
-    // areArraysEqual = (ar1, ar2) => {
-    //     let equal = true;
-    //     if (ar1.length === ar2.length) {
-    //         ar1.forEach((item, i) => {
-    //         for (let key in item) {
-    //             if (typeof(item[key]) === "object") {
-    //                 for (let j in item[key]) {
-    //                     if (item[key][j] !== ar2[i][key][j]) {
-    //                         equal = false
-    //                     }
-    //                 }
-    //             } else {
-    //                  if (item[key] !== ar2[i][key]) {
-    //                     equal = false
-    //                 }
-    //             }
-    //         }
-    //     });
-    //     } else {
-    //         equal = false
-    //     }
-    //     return equal
-    // }
-
 
     render() {
-        // let ar1 = [
-        //         {name: "Биба", age: 35},
-        //         {name: "Абоба", age: 20}
-        //     ],
-        //     ar2 = [
-        //         {name: "Биба", age: 35},
-        //         {name: "Абоба", age: 20},
-        //         {name: "А", age: 1}
-        //     ];
-        // console.log(ar1);
-        // console.log(ar2);
-        // console.log("Массивы равны по значению: " + this.areArraysEqual(ar1, ar2));
-        
-
         const {data, term, filter} = this.state;
         const visibleData = this.filterEmployees(this.searchEmployees(data, term), filter);
 
