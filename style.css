@@ -113,7 +113,18 @@
     padding: 5px 8px;
 }
 .btn-bg-color {
-    display: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+.btn.active .btn-bg-color {
+    background-color: #000000ca;
 }
 
 
