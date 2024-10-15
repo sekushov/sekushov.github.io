@@ -6,7 +6,7 @@ renderButton({
     img: "./img/marvel-api.jpg",
     title: "Marvel API",
     descr: "Фан-сайт Marvel на React с использованием API",
-    solutions: ["Каталог персонажей", "Вывод информации о персонаже", "Дозагрузка каталога"],
+    solutions: ["Каталог персонажей", "Вывод информации о персонаже", "Дозагрузка каталога", "Маршрутизация"],
     linkProject: "https://sekushov.github.io/marvel-api/build",
     linkCode: "https://github.com/sekushov/marvel-api"
 });
